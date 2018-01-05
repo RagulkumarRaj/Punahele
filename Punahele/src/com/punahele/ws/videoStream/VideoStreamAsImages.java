@@ -10,6 +10,6 @@ public class VideoStreamAsImages {
 	public void sendVideoAsImageArray(String message){
 		//Response should be a Json
 		//containing 1. start position for each of the frame that is served
-		//
+		//2. Should send the images as a single byte array
 	}
 }
