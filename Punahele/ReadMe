@@ -1,0 +1,6 @@
+Technologies used
+1. Java 8
+2. HTML5 - Websockets, HTML storage, webworkers, cache
+3. Spring Data, Try Spring Boot as well
+4. Elastic Search
+5. Maven

@@ -14,5 +14,8 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="C:/Users/ragulkumar.rajendran/eclipse-workspace/Punahele/lib/javax.json-api-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ragulkumar.rajendran/eclipse-workspace/Punahele/lib/jcodec-0.2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ragulkumar.rajendran/eclipse-workspace/Punahele/lib/jcodec-javase-0.2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ragulkumar.rajendran/eclipse-workspace/Punahele/lib/guava-15.0-rc1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
