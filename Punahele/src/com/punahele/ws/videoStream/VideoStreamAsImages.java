@@ -15,14 +15,14 @@ import com.punahele.utilities.video.VideoContentManager;
 public class VideoStreamAsImages {
 
 	@OnMessage
-	public JsonObject sendVideoAsImageArray(String message){
+	public JsonObject sendVideoAsImageArray(int frameStartPos, int frameEndPos){
 		//Response should be a Json
 		//containing 1. start position for each of the frame that is served
 		//2. Should send the images as a single byte array
 		//should play that range audio
 		VideoContentManager manager = new VideoContentManager("SOME_FILE_NAME");
-		byte[] imageSequences = manager.returnImageSequencesAsBytes(); //Get the set of images frames requested from client
-	    int[] startPositionsFrame = manager.returnFrameStartPositions();
+		byte[] imageSequences = manager.returnImageSequencesAsBytes(frameStartPos, frameEndPos); //Get the set of images frames requested from client
+	    int[] startPositionsFrame = manager.returnFrameLenghtsBtwnRanges(frameStartPos, frameEndPos);
 	    byte[] audioDataForTimeRange = manager.returnAudioCorresToVideoDur();
 	    
 	    CustomJsonBuilder objBuilder = new CustomJsonBuilder();

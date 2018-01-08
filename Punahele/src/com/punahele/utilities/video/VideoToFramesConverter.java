@@ -17,9 +17,6 @@ import org.jcodec.api.JCodecException;
 import org.jcodec.api.awt.AWTFrameGrab;
 import org.jcodec.common.io.FileChannelWrapper;
 import org.jcodec.common.io.NIOUtils;
-import org.jcodec.common.model.Picture;
-import org.jcodec.common.tools.MainUtils;
-import org.jcodec.containers.mp4.MP4Util;
 
 import com.google.common.io.Closer;
 
@@ -35,7 +32,7 @@ public class VideoToFramesConverter {
 			AWTFrameGrab fg = AWTFrameGrab.createAWTFrameGrab(in);
 			String parts[] = fileName.split("\\.");
 			new File(parts[0]).mkdir();
-			for (int i = 0; i < 4700; i++) {
+			for (int i = 0; i < 100; i++) {
 				BufferedImage frame = fg.getFrame();
 				File file = new File(parts[0]+"\\Frame" + i + ".jpeg");
 				file.createNewFile();
@@ -59,9 +56,11 @@ public class VideoToFramesConverter {
 		try {
 		    outFile = closer.register(new RandomAccessFile(finalFilename, "rw"));
 		    outChannel = closer.register(outFile.getChannel());
+		    long pieceNumber = 0; long frameStartPosition = 0;
 		    for (final File frame: frames) {
 		        doWrite(outChannel, frame);
-		        positions.append(frame.length()+" ");
+		        positions.append(++pieceNumber+"-"+frameStartPosition+","+frame.length()+"\n");
+		        frameStartPosition = frameStartPosition + frame.length() + 1;
 		    }
 		} finally {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(folderName+"\\Positions.txt"));
