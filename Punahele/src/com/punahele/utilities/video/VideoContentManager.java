@@ -22,6 +22,13 @@ public class VideoContentManager {
 		}
 	}
 
+	/**
+	 * With the start position and end position of the video, the method returns the portion 
+	 * of the full video between the given positions
+	 * @param startPositionFrame
+	 * @param endPositionFrame
+	 * @return
+	 */
 	public byte[] returnImageSequencesAsBytes(int startPositionFrame, int endPositionFrame) {
 		try {
 			String startFrameData = positionsMap.get(startPositionFrame);
@@ -46,29 +53,30 @@ public class VideoContentManager {
 		}
 	}
 
-	public int[] returnFrameLenghtsBtwnRanges(int startFramePosition, int endFramePosition) {
-		File positionsFile = new File(foldeName + "\\Positions.txt");
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(positionsFile));
-			String line = br.readLine();
-			String positionsStr[] = line.trim().split(" ");
-			int[] positions = new int[positionsStr.length];
-			for (int i = 0; i < positionsStr.length; i++) {
-				positions[i] = Integer.parseInt(positionsStr[i]);
-			}
-			br.close();
-			return positions;
-		} catch (IOException io) {
-			return new int[0];
-		}
-
+	/**
+	 * When a portion of the video is returned to the user as a sequence of images, this method
+	 * returns the positions of the image frames within that portion of data being returned
+	 * @param startFramePosition
+	 * @param endFramePosition
+	 * @return
+	 */
+	public int[] returnFramePositionsInImageSequence(int startFramePosition, int endFramePosition) {
+        String temp[] =  positionsMap.get(startFramePosition).split(",");
+        int subVal = Integer.parseInt(temp[0]); int[] framesPos = 
+        		new int[endFramePosition-startFramePosition];
+		for(int cur=startFramePosition; cur<=endFramePosition; cur++) {
+			String tempParts[] = positionsMap.get(cur).split(",");
+			framesPos[cur] = Integer.parseInt(tempParts[0]) - subVal;
+       }
+		return framesPos;
 	}
 
 	public byte[] returnAudioCorresToVideoDur() {
 		return null;
 	}
-
-	public void loadPositionsAsMap() throws IOException {
+  // map will have key as frame number and the value will be comma separated value containing
+  // 1. the frame start position and 2. The length of frame
+	private void loadPositionsAsMap() throws IOException {
 		File positionsFile = new File(foldeName + "\\Positions.txt");
 		BufferedReader br = new BufferedReader(new FileReader(positionsFile));
 		String line = br.readLine();

@@ -22,7 +22,7 @@ public class VideoStreamAsImages {
 		//should play that range audio
 		VideoContentManager manager = new VideoContentManager("SOME_FILE_NAME");
 		byte[] imageSequences = manager.returnImageSequencesAsBytes(frameStartPos, frameEndPos); //Get the set of images frames requested from client
-	    int[] startPositionsFrame = manager.returnFrameLenghtsBtwnRanges(frameStartPos, frameEndPos);
+	    int[] startPositionsFrame = manager.returnFramePositionsInImageSequence(frameStartPos, frameEndPos);
 	    byte[] audioDataForTimeRange = manager.returnAudioCorresToVideoDur();
 	    
 	    CustomJsonBuilder objBuilder = new CustomJsonBuilder();

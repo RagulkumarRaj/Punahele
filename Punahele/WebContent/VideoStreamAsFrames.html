@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test streaming over WebSockets</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<script src = "utils/decoder.js"></script>
+<script language="javascript" type="text/javascript">
+    var wsUri = "ws://192.168.178.26:8080/Punahele/requestVideo";
+    function init() {
+        websocket = new WebSocket(wsUri);
+        websocket.onmessage = function (evt) {
+        	var imageData = JSON.parse(evt["data"]);
+        	//make sure to decode imageSeqs and framePos
+        	var imageSeqs = imageData["image_sequences"];
+        	var framePos = imageData["start_positions_frames"];
+        	for(var i=0; i<framePos.length-1; i++){
+        		var frame = imageSeqs.split(framePos[i], framePos[i+1]);
+        		setTimeout(readImageData(frame), 300);
+        	}
+        	var blob = b64toBlob(videoObj["image_sequences"]);
+            readFile(blob);
+        };
+    }
+    function readFile(fileData) {
+        var video = document.getElementById('area');
+        video.src = window.URL.createObjectURL(fileData);
+    }
+    
+    function readImageData(imageData){
+    	var image = document.getElementById('area');
+    	image.src = window.URL.createObjectURL(fileData);
+    }
+    
+    function createObjectURL(file) {
+        if (window.webkitURL) {
+            return window.webkitURL.createObjectURL(file);
+        } else if (window.URL && window.URL.createObjectURL) {
+            return window.URL.createObjectURL(file);
+        } else {
+            return null;
+        }
+    }
+    function startVideo() {
+        var message = "startVideo";
+        websocket.send(message);
+    }
+    window.addEventListener("load", init, false);
+</script>
+</head>
+
+
+<body>
+<h2 style="text-align: center;">Punahele - Video Streaming Service</h2>
+<div style="text-align: center;">
+<input onclick="startVideo()" value="Start video" type="button">
+</div>
+<div>
+<video id='area' controls="controls" autoplay></video>
+</div>
+
+</body>
+</html>
