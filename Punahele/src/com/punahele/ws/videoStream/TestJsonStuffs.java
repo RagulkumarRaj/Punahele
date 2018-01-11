@@ -10,23 +10,13 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
 public class TestJsonStuffs {
 
 	public static void main(String[] args) throws IOException {
-		File file = new File("C:\\Videos\\OneRepublic - Feel Again.mp4");
-	    byte[] data = new byte[(int) file.length()];
-	    DataInputStream stream = null;
-	    stream = new DataInputStream(new FileInputStream(file));
-	    
-	    if (stream != null) {
-	        stream.read(data, 0, 1024 * 2);
-	    }
-	    System.out.println(data.length);
-        
-	    JsonObject reader = Json.createReader(stream).readObject();
-        JsonObject jso = Json.createArrayBuilder().add(1).build();
-	    stream.close();
+		JsonObject obj = Json.createObjectBuilder().add("test", 1555).build();
+		System.out.println(obj.getInt("test"));
 	}
 }

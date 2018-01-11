@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width">
 <script src = "utils/decoder.js"></script>
 <script language="javascript" type="text/javascript">
-    var wsUri = "ws://192.168.178.26:8080/Punahele/requestVideo";
+    var wsUri = "ws://localhost:8080/Punahele/requestVideo";
     function init() {
         websocket = new WebSocket(wsUri);
         websocket.onmessage = function (evt) {

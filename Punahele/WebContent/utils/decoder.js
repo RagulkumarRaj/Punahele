@@ -1,8 +1,9 @@
-function b64toBlob(b64Data, contentType, sliceSize) {
+function b64ToBlob(b64Data, contentType, sliceSize) {
   contentType = contentType || '';
   sliceSize = sliceSize || 512;
 
-  var byteCharacters = atob(b64Data);
+  //var byteCharacters = atob(b64Data);
+  var byteCharacters = b64Data;
   var byteArrays = [];
 
   for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
@@ -17,8 +18,12 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 
     byteArrays.push(byteArray);
   }
-    
-  var blob = new Blob(byteArrays, {type: contentType, "Content-Range": "bytes 10485760-26214400/31457280", 
-	  "Content-Length": "15728640"});
-  return blob;
+  
+	var blob = new Blob(byteArrays, {type: contentType});
+	return blob; 
+}
+
+function b64ToArray(b64Data){
+	var byteCharacters = atob(b64Data);
+    return byteCharacters;
 }

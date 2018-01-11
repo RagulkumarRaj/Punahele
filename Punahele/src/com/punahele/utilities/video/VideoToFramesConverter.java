@@ -32,7 +32,7 @@ public class VideoToFramesConverter {
 			AWTFrameGrab fg = AWTFrameGrab.createAWTFrameGrab(in);
 			String parts[] = fileName.split("\\.");
 			new File(parts[0]).mkdir();
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 1000; i++) {
 				BufferedImage frame = fg.getFrame();
 				File file = new File(parts[0]+"\\Frame" + i + ".jpeg");
 				file.createNewFile();
@@ -50,17 +50,18 @@ public class VideoToFramesConverter {
 		File[] frames = videoFolder.listFiles();
 		final Closer closer = Closer.create();
 
+		//Sort the frames and then merge..VVI
 		final RandomAccessFile outFile;
 		final FileChannel outChannel;
 
 		try {
 		    outFile = closer.register(new RandomAccessFile(finalFilename, "rw"));
 		    outChannel = closer.register(outFile.getChannel());
-		    long pieceNumber = 0; long frameStartPosition = 0;
+		    long pieceNumber = -1; long frameStartPosition = 0;
 		    for (final File frame: frames) {
 		        doWrite(outChannel, frame);
 		        positions.append(++pieceNumber+"-"+frameStartPosition+","+frame.length()+"\n");
-		        frameStartPosition = frameStartPosition + frame.length() + 1;
+		        frameStartPosition = frameStartPosition + frame.length();
 		    }
 		} finally {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(folderName+"\\Positions.txt"));
@@ -89,5 +90,6 @@ public class VideoToFramesConverter {
 	
 	public static void main(String[] args) throws IOException, JCodecException {
 		new VideoToFramesConverter().convertVideoToFrame("C:\\Videos\\OneRepublic - Feel Again.mp4");
+		//new VideoToFramesConverter().mergeImagesToFile("C:\\Videos\\OneRepublic - Feel Again\\Gen\\TextMerge", "C:\\Videos\\OneRepublic - Feel Again\\Gen\\TextMerge\\fin.txt");
 	}
 }

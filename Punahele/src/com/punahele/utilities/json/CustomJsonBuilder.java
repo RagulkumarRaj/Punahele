@@ -8,6 +8,8 @@ import javax.json.JsonObjectBuilder;
 
 import org.json.JSONObject;
 
+import sun.misc.BASE64Encoder;
+
 public class CustomJsonBuilder {
 	private JsonObjectBuilder builder = null;
 
@@ -17,7 +19,9 @@ public class CustomJsonBuilder {
 	}
 
 	public CustomJsonBuilder setJsonProperty(String propName, byte[] propValue) {
-		builder.add(propName, Base64.getEncoder().encodeToString(propValue));
+		BASE64Encoder encoder = new BASE64Encoder();
+		String base64Val = encoder.encode(propValue);
+		builder.add(propName, base64Val);
 		return this;
 	}
 

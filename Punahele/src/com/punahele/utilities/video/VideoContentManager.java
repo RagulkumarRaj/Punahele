@@ -41,11 +41,9 @@ public class VideoContentManager {
 
 			byte[] data = new byte[endPos - startPos];
 
-			RandomAccessFile f = new RandomAccessFile(foldeName + "\\BigFrame.jpeg", "rw");
+			RandomAccessFile f = new RandomAccessFile(foldeName + "\\BigFinal.jpeg", "rw");
 			f.seek(startPos);
-			for (int cursor = startPos; cursor <= endPos; cursor++) {
-				data[cursor] = f.readByte();
-			}
+			f.read(data, startPos, endPos);
 			f.close();
 			return data;
 		} catch (IOException e) {
@@ -63,9 +61,9 @@ public class VideoContentManager {
 	public int[] returnFramePositionsInImageSequence(int startFramePosition, int endFramePosition) {
         String temp[] =  positionsMap.get(startFramePosition).split(",");
         int subVal = Integer.parseInt(temp[0]); int[] framesPos = 
-        		new int[endFramePosition-startFramePosition];
-		for(int cur=startFramePosition; cur<=endFramePosition; cur++) {
-			String tempParts[] = positionsMap.get(cur).split(",");
+        		new int[endFramePosition-startFramePosition + 1];
+		for(int cur=0; cur<=endFramePosition-startFramePosition; cur++) {
+			String tempParts[] = positionsMap.get(cur+startFramePosition).split(",");
 			framesPos[cur] = Integer.parseInt(tempParts[0]) - subVal;
        }
 		return framesPos;
