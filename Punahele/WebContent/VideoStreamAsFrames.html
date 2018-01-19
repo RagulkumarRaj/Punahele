@@ -14,16 +14,23 @@
 			//make sure to decode imageSeqs and framePos
 			var frameData = b64ToArray(imageData["image_sequences"]);
 			var framePos = (imageData["start_positions_frames"]).split(",");
+			
+			console.log(new Date().getTime() / 1000);
 			for (var i = 0; i < framePos.length - 1; i++) {
-                if(i == framePos.length - 1){
-                	var frame = b64ToBlob(frameData.slice(framePos[i], frameData.length), "image/jpeg");
-    				setTimeout(readImageData(frame), 300);
-                }
-                else{
-                	var frame = b64ToBlob(frameData.slice(framePos[i], framePos[i + 1]), "image/jpeg");
-    				setTimeout(readImageData(frame), 300);	
-                }
+				(function(index) {
+				    //setTimeout(extractImageData(framePos, frameData, index), 300);
+				    //window.setTimeout(extractImageData, 3000, framePos, frameData, index);
+					setTimeout(extractImageData, i*300, framePos, frameData, index);
+				 })(i);
 			}
+			/*
+			for (var i = 1; i <= 5; i++) {
+			    (function(index) {
+			        setTimeout(deleteObjectUrl, i * 1000, index);
+			    })(i);
+			}
+			console.log(new Date().getTime() / 1000);
+			*/
 		};
 	}
 	
@@ -32,11 +39,28 @@
 		video.src = window.URL.createObjectURL(fileData);
 	}
 
-	function readImageData(imageData) {
+	function extractImageData(framePos, frameData, counter) {
+		 if(counter == framePos.length - 1){
+         	var frame = b64ToBlob(frameData.slice(framePos[counter], frameData.length), "image/jpeg");
+         }
+         else{
+         	var frame = b64ToBlob(frameData.slice(framePos[counter], framePos[counter + 1]), "image/jpeg");
+         }
 		var image = document.getElementById('frame');
-		image.src = window.URL.createObjectURL(imageData);
+		image.src = window.URL.createObjectURL(frame);
+		console.log("Url is : "+image.src + "at time: "+new Date().getTime() / 1000 + " :counter "+counter);
+		
 	}
-
+	
+	function deleteObjectUrl(num){
+		var inp = document.createElement("input");
+		inp.id = "inp"+num;
+		inp.type="text";
+		inp.value="val"+num;
+		document.body.append(inp);
+		console.log("at time: "+new Date().getTime() / 1000);
+	}
+	
 	function createObjectURL(file) {
 		if (window.webkitURL) {
 			return window.webkitURL.createObjectURL(file);
@@ -49,7 +73,7 @@
 	function startVideo() {
 		var message = JSON.stringify({
 			"frameStartPos" : "1",
-			"frameEndPos" : "998"
+			"frameEndPos" : "997"
 		});
 		websocket.send(message);
 	}

@@ -1,0 +1,29 @@
+90 Megs in 25 s with 9 threads    
+2 mins of buffering
+
+
+For total 9 users, per sec total 3.6 Megs of data can be streamed
+
+For a sec, total 30 secs of data can be transferred (For total 9 users)
+
+For each user, 3 secs of data can be buffered
+
+
+
+190 Megs in 63 s with 19 threads
+4 mins of buffering
+
+
+
+150 Megs in 40 s with 14 threads
+
+Per sec total 3.8 Megs of data can be streamed
+
+
+
+Avg movie size is 500 Megs
+
+1 sec 69 kb
+
+1 frame 2 kb
+
