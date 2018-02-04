@@ -1,12 +1,9 @@
 package com.punahele.utilities.json;
 
-import java.util.Base64;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-
-import org.json.JSONObject;
 
 import sun.misc.BASE64Encoder;
 

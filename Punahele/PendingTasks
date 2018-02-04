@@ -1,0 +1,7 @@
+The front end should request for more frames as and when needed.
+When the page loads, make sure that some frames related to that video are already in memory.
+Or at least a screenshot should be fine.
+Make sure that A Redis like server (or any cache provider) is setup, and frames are stored on it.
+And ensure that all the videos have their corresponding File handler (RandomAccessFile) cached
+Design a beautiful homepage - Use Angular, Botstrapp
+Add Search server as well

@@ -1,81 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Test streaming over WebSockets</title>
+<title>Punahele - Video Streaming</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<script src="utils/decoder.js"></script>
+<script src="utils/b64Utils.js"></script>
+<script src="utils/frameUtils.js"></script>
+<script src="streamManager.js"></script>
 <script language="javascript" type="text/javascript">
 	var wsUri = "ws://localhost:8080/Punahele/requestVideoAsImages";
+	var websocket = new WebSocket(wsUri);
 	function init() {
-		websocket = new WebSocket(wsUri);
 		websocket.onmessage = function(evt) {
-			var imageData = JSON.parse(evt["data"]);
-			//make sure to decode imageSeqs and framePos
-			var frameData = b64ToArray(imageData["image_sequences"]);
-			var framePos = (imageData["start_positions_frames"]).split(",");
-			
-			console.log(new Date().getTime() / 1000);
-			for (var i = 0; i < framePos.length - 1; i++) {
-				(function(index) {
-				    //setTimeout(extractImageData(framePos, frameData, index), 300);
-				    //window.setTimeout(extractImageData, 3000, framePos, frameData, index);
-					setTimeout(extractImageData, i*300, framePos, frameData, index);
-				 })(i);
-			}
-			/*
-			for (var i = 1; i <= 5; i++) {
-			    (function(index) {
-			        setTimeout(deleteObjectUrl, i * 1000, index);
-			    })(i);
-			}
-			console.log(new Date().getTime() / 1000);
-			*/
+			readFrameData(evt);
 		};
-	}
-	
-	function readFile(fileData) {
-		var video = document.getElementById('area');
-		video.src = window.URL.createObjectURL(fileData);
-	}
-
-	function extractImageData(framePos, frameData, counter) {
-		 if(counter == framePos.length - 1){
-         	var frame = b64ToBlob(frameData.slice(framePos[counter], frameData.length), "image/jpeg");
-         }
-         else{
-         	var frame = b64ToBlob(frameData.slice(framePos[counter], framePos[counter + 1]), "image/jpeg");
-         }
-		var image = document.getElementById('frame');
-		image.src = window.URL.createObjectURL(frame);
-		console.log("Url is : "+image.src + "at time: "+new Date().getTime() / 1000 + " :counter "+counter);
-		
-	}
-	
-	function deleteObjectUrl(num){
-		var inp = document.createElement("input");
-		inp.id = "inp"+num;
-		inp.type="text";
-		inp.value="val"+num;
-		document.body.append(inp);
-		console.log("at time: "+new Date().getTime() / 1000);
-	}
-	
-	function createObjectURL(file) {
-		if (window.webkitURL) {
-			return window.webkitURL.createObjectURL(file);
-		} else if (window.URL && window.URL.createObjectURL) {
-			return window.URL.createObjectURL(file);
-		} else {
-			return null;
-		}
-	}
-	function startVideo() {
-		var message = JSON.stringify({
-			"frameStartPos" : "1",
-			"frameEndPos" : "997"
-		});
-		websocket.send(message);
 	}
 	window.addEventListener("load", init, false);
 </script>
@@ -85,7 +23,7 @@
 <body>
 	<h2 style="text-align: center;">Punahele - Video Streaming Service</h2>
 	<div style="text-align: center;">
-		<input onclick="startVideo()" value="Start video" type="button">
+		<input onclick="requestFrames(1,1000)" value="Start video" type="button">
 	</div>
 	<div>
 		<img id='frame'></img>
